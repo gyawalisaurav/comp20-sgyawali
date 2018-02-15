@@ -1,0 +1,1 @@
+This is a single web page that demonstrates the use of responsive design and spriting. The css file contains media querries that display a certain part of the single picture based on the width of the browser. There are four different parts of a single picture that gets displayed based on the browser width. I spent around an hour for researching and buliding this page.
