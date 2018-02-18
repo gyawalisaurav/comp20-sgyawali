@@ -1,0 +1,14 @@
+p{
+	margin: 0.5em;
+	font-family: Palatino;
+}
+
+body {
+	text-align: center;
+	background: linear-gradient(#4CA1AF, #C4E0E5) fixed;
+	background-repeat:no-repeat;
+}
+
+h1{
+	font-family: Garamond;
+}
