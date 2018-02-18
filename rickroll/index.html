@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Rick Roll</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+<h1 id="title">Rick Roll</h1>
+
+<video src="https://www.cs.tufts.edu/comp/20/rickroll.mp4" id="rickroll" controls></video>
+<div id="lyrics"></div>
+
+<script>
+	video = document.getElementById("rickroll");
+	lyrics = document.getElementById("lyrics");
+	video.addEventListener("timeupdate", function(){
+		t = video.currentTime;
+		if (t >= 18.5 && t < 35)
+			lyrics.innerHTML = "<p>We're no strangers to love</p><p>You know the rules and so do I</p><p>A full commitment's what I'm thinking of</p><p>You wouldn't get this from any other guy</p>";
+		else if ((t >= 35 && t < 43) || (t >= 153 && t < 161))
+			lyrics.innerHTML = "<p>I just wanna tell you how I'm feeling</p><p>Gotta make you understand</p>";
+		else if ((t >= 43 && t < 60) || (t >= 85 && t < 119) || (t >= 161 && t <= 212))
+			lyrics.innerHTML = "<p>Never gonna give you up</p><p>Never gonna let you down</p><p>Never gonna run around and desert you</p><p>Never gonna make you cry</p><p>Never gonna say goodbye</p><p>Never gonna tell a lie and hurt you</p>";
+		else if ((t >= 60 && t < 77) || (t >= 136 && t < 153))
+			lyrics.innerHTML = "<p>We've known each other for so long</p><p>Your heart's been aching, but</p><p>You're too shy to say it</p><p>Inside, we both know what's been going on</p><p>We know the game and we're gonna play it</p>";
+		else if (t >= 77 && t < 85)
+			lyrics.innerHTML = "<p>And if you ask me how I'm feeling</p><p>Don't tell me you're too blind to see</p>";
+		else if (t >= 119 && t < 136)
+			lyrics.innerHTML = "<p>(Ooh, give you up)</p><p>(Ooh, give you up)</p><p>Never gonna give, never gonna give</p><p>(Give you up)</p><p>Never gonna give, never gonna give</p><p>(Give you up)</p>";
+		else
+			lyrics.innerHTML = "";
+	});
+</script>
+</body>
+</html>	
