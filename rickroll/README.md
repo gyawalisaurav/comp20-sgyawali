@@ -1,0 +1,1 @@
+This assignment demonstrates the use of javascript to creat an interactive website. The page makes use of an event listner that gets trigerred when the time of the video gets updated. After comparing the video time with certain times the respective stanza is displayed in the document. This page uses Javascript's DOM. I spent an hour and a half for this assignment.
