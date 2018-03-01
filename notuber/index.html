@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>notuber</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <link href = "styles.css" rel="stylesheet" />
+  <script async defer src = "https://maps.google.com/maps/api/js?callback=init&libraries=geometry"></script>
+  <script>
+    var maps, loc, infowindow, me, response;
+    var markers = [];
+
+ 	function init(){
+ 		maps = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 42.4062336, lng: -71.1166001},
+          zoom: 15
+        });
+        infowindow = new google.maps.InfoWindow({});
+        navigate();
+ 	}
+
+    function navigate()
+    {
+        navigator.geolocation.getCurrentPosition(function(position){
+            loc = {lat: position.coords.latitude, lng: position.coords.longitude};
+            maps.panTo(loc);
+            me = new google.maps.Marker({
+                position: loc,
+                map: maps
+            });
+            me.addListener('click', function() {
+                infowindow.setContent("I'm here");
+                infowindow.open(maps, me);
+            });
+            get_data();
+        });
+    }
+
+    function get_data()
+    {
+        var vech;
+        xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://jordan-marsh.herokuapp.com/rides', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            response = JSON.parse(xhr.responseText);
+            response.vehicles.forEach(function(passenger){
+                vech = new google.maps.Marker({
+                    position: {lat: passenger.lat, lng : passenger.lng},
+                    map: maps,
+                    icon: '/car.png'
+                });
+                markers.push(vech);
+            });
+            addInfo();
+        };
+        str = 'username=ci4WyGitnE&lat='+loc.lat+'&lng='+loc.lng;
+        xhr.send(str);
+    }
+
+    function addInfo()
+    {
+        markers.forEach(function(marker, index){
+            marker.addListener('click', function() {
+                var b = new google.maps.LatLng(loc.lat, loc.lng);
+                dis = google.maps.geometry.spherical.computeDistanceBetween(this.position,b);
+                content = '<p>Username: ' + response.vehicles[index].username + '</p>';
+                content += '<p>Distance from you: ' + (Math.round(dis/100)/10).toString() + ' km' + '</p>';
+                infowindow.setContent(content);
+                infowindow.open(maps, this);
+            });
+        });
+    }
+  </script>
+</head>
+<body>
+	<div id = 'map'></div>
+</body>
+</html>
