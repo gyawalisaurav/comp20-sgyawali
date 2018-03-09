@@ -35,43 +35,45 @@
             alert("Sorry! Your browser doesn't support geolocation");
         }
     }
-
     function get_data()
     {
         var vech;
         xhr = new XMLHttpRequest();
         xhr.open('POST', 'https://jordan-marsh.herokuapp.com/rides', true);
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            var response = JSON.parse(xhr.responseText);
-            if (response.vehicles) {
-                icon = '/car.png';
-                mIcon = '/passenger.png';
-                others = response.vehicles;
-            }
-            else {
-                icon = '/passenger.png';
-                mIcon = '/car.png';
-                others = response.passengers;
-            }
-            me = new google.maps.Marker({
-                position: loc,
-                icon: mIcon,
-                map: maps
-            });
-            others.forEach(function(other){
-                var marker = new google.maps.Marker({
-                    position: {lat: other.lat, lng : other.lng},
-                    map: maps,
-                    icon: icon
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200)
+            {
+                var response = JSON.parse(xhr.responseText);
+                if (response.vehicles) {
+                    icon = '/car.png';
+                    mIcon = '/passenger.png';
+                    others = response.vehicles;
+                }
+                else {
+                    icon = '/passenger.png';
+                    mIcon = '/car.png';
+                    others = response.passengers;
+                }
+                me = new google.maps.Marker({
+                    position: loc,
+                    icon: mIcon,
+                    map: maps
                 });
-                var b = new google.maps.LatLng(loc.lat, loc.lng);
-                var a = new google.maps.LatLng(other.lat, other.lng);
-                var dis = google.maps.geometry.spherical.computeDistanceBetween(a, b);
-                distances.push(dis);
-                markers.push(marker);
-            });
-            addInfo();
+                others.forEach(function(other){
+                    var marker = new google.maps.Marker({
+                        position: {lat: other.lat, lng : other.lng},
+                        map: maps,
+                        icon: icon
+                    });
+                    var b = new google.maps.LatLng(loc.lat, loc.lng);
+                    var a = new google.maps.LatLng(other.lat, other.lng);
+                    var dis = google.maps.geometry.spherical.computeDistanceBetween(a, b);
+                    distances.push(dis);
+                    markers.push(marker);
+                });
+                addInfo();
+            }
         };
         str = 'username=' + username + '&lat=' + loc.lat + '&lng=' + loc.lng;
         xhr.send(str);
