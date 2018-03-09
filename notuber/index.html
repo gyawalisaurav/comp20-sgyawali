@@ -10,7 +10,7 @@
     var maps, loc, infowindow, me;
     var markers = [];
     var distances = [];
-
+    var username = 'ci4WyGitnE';
  	function init(){
  		maps = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 42.4062336, lng: -71.1166001},
@@ -73,7 +73,7 @@
             });
             addInfo();
         };
-        str = 'username=ci4WyGitnE&lat=' + loc.lat + '&lng=' + loc.lng;
+        str = 'username=' + username + '&lat=' + loc.lat + '&lng=' + loc.lng;
         xhr.send(str);
     }
 
@@ -90,13 +90,18 @@
             });
         });
         me.addListener('click', function() {
-            infowindow.setContent((Math.round(Math.min(...distances)*0.000621371*100)/100).toString());
+            if (distances.length > 0)
+                dis = (Math.round(Math.min(...distances)*0.000621371*100)/100).toString();
+            else
+                dis = "No one is online";
+            infowindow.setContent('<p>Your username: ' + username + '</p>' + '<p>Closest Distance: ' + dis + '</p>');
             infowindow.open(maps, me);
         });
     }
   </script>
 </head>
 <body>
+    <div id = 'header'><span>notUber</span></div>
 	<div id = 'map'></div>
 </body>
 </html>
