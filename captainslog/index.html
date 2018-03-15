@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Captain's Log</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            for (var i = 0; i < localStorage.length; i++){
+                var index = localStorage.key(i);
+                var cur_date = new Date;
+                cur_date.setTime(index);
+                var date_text = cur_date.toDateString() + ", " + cur_date.toLocaleTimeString(); 
+                var text = localStorage.getItem(index);
+                $('#log').prepend("<p><span class = 'time'>"+ date_text + "</span> - <span>" + text + "</span></p>");
+            }
+
+            $("#msg").on('keypress', function(e){
+                if (e.keyCode == 13) {
+                    var text = $("#msg").val();
+                    $("#msg").val("");
+                    var cur_date = new Date;
+                    localStorage[cur_date.getTime()] = text;
+                    var date_text = cur_date.toDateString() + ", " + cur_date.toLocaleTimeString(); 
+                    $("#log").prepend("<p><span class = 'time'>"+ date_text + "</span> - <span>" + text + "</span></p?");
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Captain's Log</h1>
+    <h3>New entry: <input type="text" id="msg" name="msg" size="30" /></h3>
+    <div id="log"></div>
+</body>
+</html>
