@@ -1,8 +1,21 @@
 <html>
 <head>
 	<title>Code Review</title>
+	<style>
+		p , li {
+			font-size: 20px;
+		}
+		.no_bullet {
+			list-style: none;
+		}
+		#container{
+			width: 95%;
+			margin:0 auto;
+		}
+	</style>
 </head>
 <body>
+	<div id = "container">
 	<h1>Security and Privacy Assessment of the Assignements 2 and 3</h1>
 	<h2>Introduction</h2>
 	<p>I am assessing the security and the privacy of the assignments 2 and 3 done by Allison Endo. These assignments are from our Web Programming class. Assignment 2 consists of the client side part of a bigger project that is the ride sharing app in the web. This part uses the google maps api to get map to the browser and HTML5 geolocation to find the user's current location. It used XMLHttpRequest to communicate with the server side. The server side falls under assignment 4 and contains the parts that connects to the users, collects data from users, provides data and also stores the data.</p>
@@ -14,7 +27,47 @@
 	<p><ul><li>The server doesn't validate the data sent by the user. So, users can send malicious data that can cause these issues<ul><li>Users can send harmful scripts that are sent back to the browser and the website behaves abnormally</li><li>Users can easily get all the data in the database.</li></ul></li><li>The webpage plainly displays all the vehicle request data with the location and time. This is a major privacy flaw as it can allow people to track the users.</li><li>There is no authentication system for users, so data can be tampered by anyone.</li><li>The server side has two instances of a request handler with the same route which is a bad programming practice</li>
 	</ul>
 	<h2>Issues Found</h2>
+	<ul class="no_bullet">
+	<li>
+	<h4>Cross Site Scripting</h4>
+	<ul><li>Location: The index page of the website which echoes the data sent through the /rides post request.</li>
+		<li>Severity: This is a highly severe issue since users can add behaviours to the webpage that can make it do a lot of abnormal things and even compromise data by sending cookies and login data to other websites.</li>
+		<li>Description: While doing the black-box testing, I sent a post request with a javascript snippet and opened all the pages accessible in the web browser. The script ran in the index page.<p><img src = "xss-attack.png"/></p></li>
+		<li>Proof of vulnerability.<p>The snippet I sent through the post request was a simple alert box shown below:</p><p><img src = "xss.png"/></p></li>
+		<li>Resolution: The developer should validate the data from clients before storing it in the database, or escape the special characters before storing or before sending the data to the client's browser.</li>
+	</ul>
+	</li>
+	<li>
+	<h4>Database injection</h4>
+	<ul><li>Location: The /vehicle.json route with get method allows mongodb injection.</li>
+		<li>Severity: This is a highly severe issue since any user can find all the information on all the vehicles stored in the database</li>
+		<li>Description: I also found this during the black-box testing. I used the following url to get all the vehicles data stored in the datatbase: <p>https://ancient-woodland-51895.herokuapp.com/vehicle.json?username[$ne]=hello</p></li>
+		<li>Proof of vulnerability.<p><img src = "db_injection.png"/></p></li>
+		<li>Resolution: The developer should validate the user's request before executing the database queries. Special characters for the MongoDB line $ can be escaped.</li>
+	</ul>
+	</li>
+	<li>
+	<h4>Lack of Authentication</h4>
+	<ul><li>Location: Across the entire website</li>
+		<li>Severity: This is highly severe issue since it compromises the user's data. This can also lead to attackers sending high volume fake requests that exhausts the server's resources and compromises the functionality for real users.</li>
+		<li>Description: The index page plainly shows the location and the corresponding time of users through which we can directly track the users. The website also bypasses the same origin policy and doesn't require any authentication for the data.</li>
+		<li>Proof of vulnerability.<p><img src = "privacy.png"/></p></li>
+		<li>Resolution: The developer should make a provision for authenticating users by making separate accounts for legitimate users. The client side part should be served by the server itself, so that same origin policy can still remain intact.</li>
+	</ul>
+	</li><li>
+	<h4>Bad programmming practice</h4>
+	<ul><li>Location: Server side code</li>
+		<li>Severity: low</li>
+		<li>Description: While going through the code I found two instances of the get request handler for "/" route.</li>
+		<li>Proof.<p><img src = "code.png"/></p></li>
+		<li>Resolution: The developer should remove the extra unnecessary get request handler in the source code</li>
+	</ul>
+	</li></ul>
 	<h2>Conclusion</h2>
+	<p>The code under review is functional but needs many upgrades and fixes to reduce security compromises. The dependencies can be upgraded since older versions are being used in the program right now. There are also two dependencies(validator and util) that are included but not used in the entire code. This could be removed becacuse with more dependencies there is more chances of one of them breaking down and affecting the product. Adding authentication system to the product will be a huge enhancement to the product's security and privacy protection.</p>
 	<h2>References</h2>
+	<p>All of this review is based on the end-product and the source-code provided by the developer. Furthermore, I looked up online for more information on common security vulnerablities. I used the followong resources<p>
+		<p><a href = "https://www.owasp.org/index.php/Testing_for_NoSQL_injection">https://www.owasp.org/index.php/Testing_for_NoSQL_injection</a></p>
+		<p><a href = "https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)</a></p>
 </body>
 </html>
