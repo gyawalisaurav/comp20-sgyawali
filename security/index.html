@@ -1,0 +1,20 @@
+<html>
+<head>
+	<title>Code Review</title>
+</head>
+<body>
+	<h1>Security and Privacy Assessment of the Assignements 2 and 3</h1>
+	<h2>Introduction</h2>
+	<p>I am assessing the security and the privacy of the assignments 2 and 3 done by Allison Endo. These assignments are from our Web Programming class. Assignment 2 consists of the client side part of a bigger project that is the ride sharing app in the web. This part uses the google maps api to get map to the browser and HTML5 geolocation to find the user's current location. It used XMLHttpRequest to communicate with the server side. The server side falls under assignment 4 and contains the parts that connects to the users, collects data from users, provides data and also stores the data.</p>
+	<p>I am reviewing this product to get information about the security and privacy status. This document contains the results I obtained from reviewing the product from the outside and also the source code</p>
+	<h2>Methodology</h2>
+	<p>I used curl for sending post request and data to the website. For get requests and queries I used Chrome web browser. Furthermore, I also directly reviewed the source code to look for privacy and security flaws.</p>
+	<h2>Absract of Findings</h2>
+	<p>These are the security and privacy issues I identified from the testing</p>
+	<p><ul><li>The server doesn't validate the data sent by the user. So, users can send malicious data that can cause these issues<ul><li>Users can send harmful scripts that are sent back to the browser and the website behaves abnormally</li><li>Users can easily get all the data in the database.</li></ul></li><li>The webpage plainly displays all the vehicle request data with the location and time. This is a major privacy flaw as it can allow people to track the users.</li><li>There is no authentication system for users, so data can be tampered by anyone.</li><li>The server side has two instances of a request handler with the same route which is a bad programming practice</li>
+	</ul>
+	<h2>Issues Found</h2>
+	<h2>Conclusion</h2>
+	<h2>References</h2>
+</body>
+</html>
